@@ -19,3 +19,5 @@ def detail(request, id):
     }
 
     return render(request, 'detail.html', context)
+
+    
