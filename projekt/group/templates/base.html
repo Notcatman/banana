@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} WAAAA {% endblock %}</title>
-    <link rel="icon" href="/static/images/favi.png">
+    <title>{% block title %} Todo List {% endblock %}</title>
+    <link rel="icon" href="/static/images/out.png">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     <style>
 
@@ -22,9 +22,14 @@
             src: url(/static/fonts/SemiBold.otf);
         }
 
+         @font-face {
+            font-family: hi;
+            src: url(/static/fonts/consolas.ttf);
+        }
+
         body {
             margin: 0;
-            font-family: hello, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            font-family: hello;
             background: linear-gradient(135deg, var(--banana-cream) 0%, hsl(55, 100%, 95%) 35%, var(--banana-yellow) 100%);
             color: var(--brown-dark);
             background-image: url('/static/images/boba.jpg');
@@ -199,10 +204,6 @@
             transition: 0.3s ease;
         }
 
-        .icon-button:focus {
-            outline: 2px solid hsla(42, 100%, 50%, 0.25);
-            outline-offset: 2px;
-        }
 
         .divider {
             width: 2px;
@@ -212,6 +213,21 @@
             margin: 0 6px;
         }
 
+
+        .task--completed { opacity: 0.68; }
+        .task--completed .task-content h3,
+        .task--completed .task-content p { text-decoration: line-through; color: hsl(41, 8%, 30%); }
+        .task--completed .icon-button { opacity: 0.9; }
+
+        .cross-btn:hover{
+            background: hsla(0, 0%, 56%, 0.233);
+        }
+
+        .uncross-btn:hover{
+            background: hsla(0, 0%, 72%, 0.343);
+        }
+
+
         
         .add-task-btn {
             display: inline-block;
@@ -220,7 +236,7 @@
             width: 240px;
             border-radius: 50px;
             background: linear-gradient(90deg, var(--banana-yellow), var(--banana-gold));
-            color: hsl(0, 0%, 100%);
+            color: var(--brown-dark);
             font-weight: 700;
             border: 1px solid hsla(0, 0%, 50%, 0.556);
             cursor: pointer; 
@@ -230,57 +246,224 @@
             text-align: center;
             font-size: x-large;
 
-            transition: 0.5s ease;
+            transition: 0.6s ease;
 
             
         }
         .add-task-btn:hover {
-            transform: translateY(-4px) rotate(-1deg);
-            transition: 0.5s ease;
+            transform: translateY(-3px);
+            transition: 0.6s ease;
             box-shadow: 3px 3px 2px hsla(41, 100%, 18%, 0.476);
-            border-radius: 40px;
             border: 1px solid hsla(0, 0%, 50%, 0.544);
         }
-        .add-task-btn:focus {
-            outline: 2px solid hsla(42, 100%, 50%, 0.2);
-            outline-offset: 2px;
+
+
+        .modal-toggle { display: none; }
+        .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .modal-toggle:checked ~ .modal { display: flex; }
+        .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.62); cursor: pointer; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+        .modal-content { position: relative; z-index: 2; background: linear-gradient(180deg, #ffffff, #fbfbfb); padding: 24px; border-radius: 14px; width: 94%; max-width: 560px; box-shadow: 0 20px 50px rgba(0,0,0,0.35); border: 1px solid rgba(0,0,0,0.06); }
+        .modal-content:focus { outline: none; }
+
+        
+        .no-tasks {
+            padding: 72px 20px;
+            text-align: center;
+            color: var(--brown-dark);
+            font-size: 20px;
+            background: linear-gradient(180deg, hsl(54, 100%, 96%), hsl(54, 100%, 98%));
+            border-top: 1px dashed hsla(41, 100%, 18%, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .no-tasks img {
+            display:block; 
+            margin-bottom: 4px; 
+            height: 108px;
+            opacity: 85%;
+        }
+
+        .save-task-btn {
+            display: inline-block;
+            margin: 25px auto 25px;
+            padding: 10px 18px;
+            width: 190px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, hsl(221, 50%, 47%), hsl(221, 30%, 54%));
+            color: hsl(0, 0%, 100%);
+            font-weight: 700;
+            border: 1px solid hsla(0, 0%, 50%, 0.556);
+            cursor: pointer; 
+            box-shadow: 0 6px 14px hsla(41, 100%, 18%, 0.12);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s;
+            font-family: hello;
+            text-align: center;
+            font-size: x-large;
+            transition: 0.5s ease;
+        }
+
+        .save-task-btn:hover{
+            transform: translateY(-2px);
+            transition: 0.5s ease;
+            box-shadow: 3px 3px 2px hsla(41, 100%, 18%, 0.476);
+            
+        }
+
+        .cancel-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            min-height: 36px;
+            border-radius: 50px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--brown-dark);
+            text-decoration: none;
+            transition: 0.5s ease;
+            background: hsl(0, 0%, 100%); 
+            border: 1px solid hsla(0, 0%, 50%, 0.428);
+            height: 20px; 
+            margin-top: 25px; 
+            font-size: larger;
+
+            margin-right: 30px;
+
+            font-family: hello;
+        }
+        .cancel-btn:hover {
+            background: hsl(0, 65%, 90%);
+            transition: 0.5s ease;
+        }
+
+        .form-input {
+            width: 100%;               
+            max-width: 520px;          
+            box-sizing: border-box;    
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 2px solid hsl(216, 12%, 84%);
+            font-size: 16px;
+            transition: border-color .12s, box-shadow .12s;
+            background: hsl(0, 0%, 100%);
+        }
+
+    
+        .form-input--desc {
+            min-height: 110px;
+            max-height: 300px;      
+            resize: vertical;      
+            margin-top: 7px;
+        }
+
+        .form-input--title {
+            max-width: 100%;
+            font-family: hi;
+            margin-top: 7px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: hsl(45, 86%, 62%);    
+        }
+
+        .form-checkbox {
+            transform: scale(1.15);
+            margin-right: 8px;
         }
     </style>
+    {% block extra %}{% endblock %}
 </head>
 <body>
 
     <nav class="navbar">
-        <h1 class="brand">To Do List</h1>
+        <h1 class="brand">{% block brand %}To Do List{% endblock %}</h1>
     </nav>
 
     <div class="one">
-        {% for t in tasks %}    
-            <div class="task" id="task-{{ t.id }}">
-                <div class="task-content">
-                    <a href="{% url 'detail_page' t.id %}"><h3>{{ t.title }}</h3></a>
-                    <p style="color: hsla(0, 0%, 44%, 0.385); margin-top: -10px;">{{ t.description }}</p>
+        {% block content %}
+        {% if tasks %}
+            {% for t in tasks %}    
+                <div class="task {% if t.completed %}task--completed{% endif %}" id="task-{{ t.id }}">
+                    <div class="task-content">
+                        <a href="{% url 'detail_page' t.id %}"><h3>{{ t.title }}</h3></a>
+                        <p style="color: hsla(0, 0%, 44%, 0.385); margin-top: -10px;">{{ t.description }}</p>
+                    </div>
+
+                    <div class="task-actions" aria-hidden="false">
+
+                        {% if not t.completed %}
+                        <a class="icon-button cross-btn" href="{% url 'cross' t.id %}" title="Mark done">
+                            <h3 style="font-size:17px;">Mark done</h3>
+                        </a>
+                        {% else %}
+                        <a class="icon-button uncross-btn" href="{% url 'uncross' t.id %}" title="Undo">
+                            <h3 style="font-size:17px;">Undo</h3>
+                        </a>
+                        {% endif %}
+
+                        <a class="icon-button icon-button--edit"  title="Edit" role="button">
+                            <h3 style="font-size: 18px;">Edit</h3>
+                            <img src="/static/images/edit.png" alt="">
+                        </a>
+
+                        <div class="divider" aria-hidden="true"></div>
+
+                        <form method="post" action="{% url 'delete' t.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="icon-button icon-button--delete" type="submit" title="Delete">
+                                <h3 style="font-size:18px;">Delete</h3>
+                                <img src="/static/images/trash.png" alt="">
+                            </button>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="task-actions" aria-hidden="false">
-                    <a class="icon-button icon-button--edit"  title="Edit" role="button">
-                        <h3 style="font-size: 18px;">Edit</h3>
-                        <img src="/static/images/edit.png" alt="">
-                    </a>
-
-                    <div class="divider" aria-hidden="true"></div>
-
-                    <form method="post" style="display:inline;">
-                        
-                        <button class="icon-button icon-button--delete" type="submit" title="Delete">
-                            <h3 style="font-size:18px;">Delete</h3>
-                            <img src="/static/images/trash.png" alt="">
-                        </button>
-                    </form>
-                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-tasks" role="status">
+                <img src="/static/images/cry.png">
+                <h2 style="opacity: 75%;">No tasks</h2>
+                <p style="margin-top:6px; opacity: 75%;">Click the button below to create task</p>
             </div>
-        {% endfor %}
+        {% endif %}
 
-        <button type="button" class="add-task-btn" aria-label="Add task">Add Task</button>
+        <label for="modal-toggle" class="add-task-btn" style="cursor:pointer;">Add Task</label>
+
+        {% endblock %}  
     </div>
+
+
+    <input type="checkbox" id="modal-toggle" class="modal-toggle" aria-hidden="true" />
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-overlay" role="presentation"></div>
+        <div class="modal-content" role="document">
+            <h2 id="modal-title">Add Task</h2>
+            <form method="post" action="{% url 'add_task' %}">
+                {% csrf_token %}
+                <div style="margin-bottom:12px;">
+                    {{ form.title.label_tag }}<br>
+                    {{ form.title }}
+                    {% if form.title.errors %}<div style="color:hsl(0, 100%, 50%);">{{ form.title.errors }}</div>{% endif %}
+                </div>
+                <div style="margin-bottom:12px;">
+                    {{ form.description.label_tag }}<br>
+                    {{ form.description }}
+                    {% if form.description.errors %}<div style="color:hsl(0, 100%, 50%);">{{ form.description.errors }}</div>{% endif %}
+                </div>
+                <div style="margin-bottom:12px;">
+                     {{ form.completed.label_tag }} {{ form.completed }}
+                    {% if form.completed.errors %}<div style="color:hsl(0, 100%, 50%);">{{ form.completed.errors }}</div>{% endif %}
+                </div>
+                <div style="display:flex; gap:8px; justify-content:flex-end;">
+                    <button type="submit" class="save-task-btn">Save</button>
+                    <label for="modal-toggle" class="cancel-btn">Cancel</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
