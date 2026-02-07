@@ -7,5 +7,6 @@ urlpatterns = [
     path('add/', add_task, name='add_task'),
     path("delete/<list_id>", delete, name="delete"),
     path("cross/<list_id>", cross, name="cross"),
-    path("uncross/<list_id>", uncross, name="uncross")
+    path("uncross/<list_id>", uncross, name="uncross"),
+    path('edit/<int:id>', edit, name='edit')
 ]

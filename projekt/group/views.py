@@ -59,3 +59,16 @@ def uncross(request, list_id):
     item.completed = False
     item.save()
     return redirect('tasks')
+
+def edit(request, id):
+    if request.method == "POST":
+        item = Task.objects.get(id=id)
+
+        form = TaskForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks')
+    
+    else:
+        item = Task.objects.get(id=id)
+        return render(request, 'edit_page.html', {'item': item})

@@ -4,21 +4,251 @@
 
 {% block brand %}Task Details{% endblock %}
 
+{% block page_wrapper %} {% endblock %}
+
+{% block page_wrapper_end %} {% endblock %}
+
+{% block icon %}<link rel="icon" href="/static/images/what.png">{% endblock %}
+
 {% block extra %}
 <style>
-.detail-card { padding: 28px; max-width: 800px; margin: 36px auto;}
-.detail-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.detail-title { font-size:32px; margin:0; color:var(--brown-dark); }
-.badge { padding:6px 10px; border-radius:999px; font-weight:700; font-size:13px; }
-.badge.completed { background: hsl(123,60%,90%); color: hsl(123,30%,20%); border:1px solid hsl(123,40%,40%); }
-.badge.pending { background: hsl(0,80%,92%); color: hsl(0,60%,25%); border:1px solid hsl(0,60%,25%); }
-.detail-body { margin-top: 16px; color: hsla(0,0%,10%,0.9); line-height:1.6; font-size:18px; }
-.dat { margin-top: 14px; color: hsla(0,0%,10%,0.6); display:flex; gap:12px; align-items:center; font-size:14px; }
-@media (max-width:600px){ .detail-title{font-size:22px;} .detail-card{margin:18px;padding:18px;} }
-.back { display: inline-flex; align-items: center; justify-content: center; border-radius: 50px; gap: 10px; margin: 20px auto 0; font-family: hello; font-size: larger; background: linear-gradient(90deg, var(--banana-yellow), var(--banana-gold)); padding: 8px 16px; min-width: 140px; font-weight: 700; border: 1px solid hsla(0, 0%, 50%, 0.556); cursor: pointer; box-shadow: 0 6px 14px hsla(41, 100%, 18%, 0.12); transition: 0.5s ease; }
-.back:hover{ transform: translateX(-3px); box-shadow: 3px 3px 2px hsla(41, 100%, 18%, 0.476); border: 1px solid hsla(0, 0%, 50%, 0.544); transition: 0.5s ease; }
-.back img{ width: 21px; opacity: 0.99; margin: 0; display: block; }
-.back span{ display: inline-block; vertical-align: middle; }
+
+:root{
+    --kiwi-light: hsl(110, 100%, 88%);
+    --kiwi-green: hsl(131, 72%, 25%);
+    --kiwi-deep: hsl(88, 96%, 35%);
+    --dark-green: hsl(100, 60%, 25%);
+}
+
+body {
+    background: linear-gradient(135deg, var(--kiwi-light) 0%, hsl(110, 100%, 95%) 35%, var(--kiwi-green) 100%) !important;
+    background-image: url('/static/images/kwa.jpg') !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;      
+    background-attachment: fixed !important;
+}
+
+.navbar {
+    background: linear-gradient(180deg, var(--kiwi-green), var(--kiwi-deep)) !important;
+}
+
+.navbar .brand {
+    color: white !important;
+
+}
+
+*::selection {
+    background: hsla(120, 100%, 25%, 0.713);
+    color: hsl(0, 0%, 100%);
+}
+
+.detail-card { 
+    background: linear-gradient(180deg, #ffffff, #fbfbfb);
+    padding: 32px; 
+    max-width: 700px; 
+    /* height: 31px; */
+    margin: 110px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    border: 1px solid rgba(0,0,0,0.06);
+    animation: showAnimation 0.6s ease-out;
+  
+}
+
+.detail-header { 
+    display: flex; 
+    align-items: flex-start; 
+    justify-content: space-between; 
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid hsla(0, 0%, 0%, 0.08);
+}
+
+.detail-title { 
+    font-size: 36px; 
+    
+    margin: 0; 
+    color: var(--dark-green);
+    flex: 1;
+    word-break: break-word;
+}
+
+.badge::selection{
+  background: none;
+}
+
+/* .badge { 
+    padding: 8px 16px; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    font-size: 42px;
+    margin-top: -30px;
+    margin-left: 410px;
+    position: fixed;
+    transform: rotate(10deg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+} */
+
+.badge.completed { 
+    background: hsl(123, 60%, 90%); 
+    color: hsl(123, 30%, 20%); 
+    border: 2px dashed hsl(123, 40%, 40%); 
+    
+    padding: 8px 16px; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    font-size: 42px;
+    margin-top: -30px;
+    margin-left: 450px;
+    position: fixed;
+    transform: rotate(10deg);
+    text-transform:uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.badge.pending { 
+    background: hsl(0, 80%, 92%); 
+    color: hsl(0, 60%, 25%); 
+    border: 2px dashed hsl(0, 60%, 25%); 
+    
+    padding: 8px 16px; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    font-size: 42px;
+    margin-top: -30px;
+    margin-left: 350px;
+    position: fixed;
+    transform: rotate(10deg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.detail-body { 
+    margin: 0;
+    color: hsla(0, 0%, 16%, 0.85);
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+.detail-body p {
+    margin: 0 0 20px 0;
+    word-wrap: break-word;
+}
+
+.detail-body em {
+    color: hsla(0, 0%, 0%, 0.4);
+    font-style: italic;
+}
+
+.dat { 
+    margin: 30px 0;
+    color: hsla(0, 0%, 10%, 0.6);
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+    font-size: 16px;
+    /* padding: 12px; */
+    /* background: hsl(0, 0%, 97%); */
+  
+    border-radius: 4px;
+}
+
+.dat strong {
+    color: hsla(0, 0%, 10%, 0.6);
+    font-weight: 600;
+}
+
+@media (max-width: 600px) { 
+    .detail-title { font-size: 24px; } 
+    .detail-card { margin: 18px; padding: 24px; } 
+    .detail-header { flex-direction: column; }
+    .badge { margin-top: 8px; }
+}
+
+.back { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 8px; 
+     
+    margin: 24px 0 0 0; 
+    font-family: hi; 
+    font-size: 21px; 
+    background: transparent; 
+
+    padding: 5px 9px; 
+    width: 110px; 
+    font-weight: 700; 
+    border: 3px solid hsla(119, 90%, 20%, 0.556); 
+    cursor: pointer; 
+    box-shadow: 0 4px 12px hsla(105, 100%, 30%, 0.15); 
+    transition: 0.3s ease;
+}
+
+.back a{
+  color: hsl(92, 90%, 16%);
+}
+
+.back:hover { 
+    transform: translateY(-2px); 
+   
+    border: 3px solid hsla(118, 76%, 10%, 0.556); 
+    transition: 0.3s ease; 
+}
+
+.edit { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 8px; 
+     
+    margin: 24px 0 0 0; 
+    font-family: hi; 
+    font-size: 21px; 
+    background: transparent; 
+
+    padding: 5px 9px; 
+    width: 140px; 
+    font-weight: 700; 
+    border: 3px solid hsla(347, 92%, 24%, 0.556); 
+    cursor: pointer; 
+    box-shadow: 0 4px 12px hsla(105, 100%, 30%, 0.15); 
+    transition: 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.edit a{
+  color: hsla(347, 92%, 24%, 0.556);
+}
+
+.edit:hover { 
+    transform: translateY(-2px); 
+   
+    border: 3px solid hsla(347, 89%, 14%, 0.556); 
+    transition: 0.3s ease; 
+}
+
+.yes {
+    display: flex;
+    gap: 22px;
+    margin-top: 12px;
+}
+
+
+
+@keyframes showAnimation {
+    from { opacity: 0; transform: translateY(-20px); } 
+    to { transform: translateY(0); opacity: 1; }
+}
+
 </style>
 {% endblock %}
 
@@ -36,10 +266,13 @@
     <p>{% if task.description %}{{ task.description|linebreaksbr }}{% else %}<em style="color:hsla(0,0%,0%,0.55);">No description</em>{% endif %}</p>
     <div class="dat">Date: <strong>{{ task.date }}</strong></div>
 
-    <button class="back" type="button"">
-        <img src="/static/images/back.png" alt="Back icon">
-        <span><a href="{% url 'tasks' %}">Back</a></span>
-    </button>
+    
+    
+        <div class="yes">
+            <a href="/" class="back">Back</a>
+            <a href="{% url 'edit' task.id %}" class="edit">Edit</a>
+        </div>
+    
   </div>
 </div>
 {% endblock %}

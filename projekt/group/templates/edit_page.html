@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.title }} - Edit</title>
+    <link rel="icon" href="/static/images/conp.png">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root{
+            --watermelon-light: hsl(345, 100%, 92%);
+            --watermelon-pink: hsl(345, 100%, 68%);
+            --watermelon-deep: hsl(345, 95%, 60%);
+            --watermelon-dark: hsl(345, 60%, 25%);
+            --accent: hsl(345, 100%, 60%);
+        }
+
+        @font-face {
+            font-family: hello;
+            src: url(/static/fonts/SemiBold.otf);
+        }
+
+        @font-face {
+            font-family: hi;
+            src: url(/static/fonts/consolas.ttf);
+        }
+
+        body {
+            margin: 0;
+            font-family: hello;
+            background: linear-gradient(135deg, var(--watermelon-light) 0%, hsl(345, 100%, 95%) 35%, var(--watermelon-pink) 100%);
+            color: var(--watermelon-dark);
+            background-image: url('/static/images/emlos.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;      
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        *::selection {
+            background: hsla(120, 94%, 31%, 0.687);
+            color: hsl(0, 0%, 100%);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--watermelon-dark);
+        }
+
+        @keyframes showAnimation{
+            from{ opacity: 0; transform: translateY(-20px); } to{ transform: translateY(0); opacity: 1; }
+        }
+
+        .navbar {
+            background: linear-gradient(180deg, var(--watermelon-pink), var(--watermelon-deep));
+            padding: 28px 16px;
+            text-align: center;
+            box-shadow: 0 6px 18px hsla(0, 0%, 0%, 0.08);
+            animation: showAnimation 0.9s ease-out;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .navbar .brand {
+            margin: 0;
+            color: hsl(0, 0%, 100%);
+            font-size: 48px;
+            letter-spacing: 0.6px;
+            text-shadow: 0 2px 0 hsla(0, 0%, 0%, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar .brand span.emoji{
+            font-size: 56px;
+            transform: rotate(-12deg);
+            display: inline-block;
+        }
+
+        .edit-container {
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(180deg, #ffffff, #fbfbfb);
+            padding: 32px;
+            border-radius: 16px;
+            width: 94%;
+            max-width: 560px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            border: 1px solid rgba(0,0,0,0.06);
+            animation: showAnimation 0.6s ease-out;
+            margin: 110px auto 40px;
+        }
+
+        .edit-container h1 {
+            margin: 0 0 26px 0;
+            color: var(--watermelon-dark);
+            font-size: 34px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--watermelon-dark);
+            font-weight: 600;
+            font-size: 19px;
+        }
+
+        .form-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 2px solid hsl(216, 12%, 84%);
+            font-size: 17px;
+            font-weight: 600;
+            color: hsl(0, 0%, 32%);
+            font-family: hi;
+            transition: border-color .12s, box-shadow .12s, background .12s;
+            background: hsl(0, 0%, 100%);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--watermelon-pink);
+        }
+
+        .form-input--desc {
+            min-height: 110px;
+            max-height: 300px;      
+            resize: vertical;
+        }
+
+        .form-checkbox {
+            margin-left: 15px;
+            transform: scale(1.4);
+        }
+
+
+        .checkbox-group {
+            display: flex;
+            padding: 12px;
+            background: hsl(0, 0%, 98%);
+
+        }
+
+
+        .checkbox-group label {
+            margin: 0;
+            display: flex;
+            cursor: pointer;
+            font-weight: 500;
+
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 28px;
+        }
+
+        .save-btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--watermelon-pink), var(--watermelon-deep));
+            color: hsl(0, 0%, 100%);
+            font-weight: 700;
+            border: 3px solid var(--watermelon-pink);
+            cursor: pointer;
+            font-family: hello;
+            font-size: 18px;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 12px rgba(230, 80, 120, 0.3);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px hsla(344, 75%, 61%, 0.4);
+            transition: 0.3s ease;
+            /* border-radius: 30px; */
+            border-color: hsla(123, 99%, 30%, 0.968);
+        }
+
+        .cancel-btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            background: hsl(0, 0%, 95%);
+            color: var(--watermelon-dark);
+            font-weight: 700;
+            border: 2px solid hsl(216, 12%, 84%);
+            cursor: pointer;
+            font-family: hello;
+            font-size: 18px;
+            transition: 0.3s ease;
+            text-align: center;
+            display: inline-block;
+
+    
+        }
+
+        .cancel-btn:hover {
+            background: hsl(0, 0%, 90%);
+            color: hsl(345, 71%, 52%);
+            transition: 0.3s ease;
+            border: 2px solid hsl(345, 100%, 68%);
+
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1 class="brand">Edit Task</h1>
+    </nav>
+
+    <div class="edit-container">
+        <h1>Task - {{ item.title }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_title">Title</label>
+                <input type="text" name="title" id="id_title" value="{{ item.title }}" class="form-input" maxlength="50" minlength="3" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Description</label>
+                <textarea name="description" id="id_description" maxlength="300" class="form-input form-input--desc">{{ item.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <label for="id_completed">Completed:</label>
+
+                    <input type="checkbox" name="completed" id="id_completed" {% if item.completed %}checked{% endif %} class="form-checkbox">
+            
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="/" class="cancel-btn">Cancel</a>
+                <button type="submit" method="post" class="save-btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
